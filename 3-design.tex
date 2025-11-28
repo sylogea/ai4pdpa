@@ -1,23 +1,90 @@
 \chapter{System Design}
 
-\lipsum[1-1]
+To support our goal of helping Singaporean SMEs comply with the PDPA, we introduce a novel chatbot system that aims to answer PDPA-related queries in factual and transparent way.
 
-\begin{table}[h!]
+\begin{figure}[H]
 	\centering
-	\begin{tabular}{l c r}
-		\toprule
-		Item & Quantity & Price \\
-		\midrule
-		Apple & 3 & \$5 \\
-		Orange & 2 & \$4 \\
-		Banana & 6 & \$6 \\
-		\bottomrule
-	\end{tabular}
-\end{table}
+	\includegraphics[width=0.75\textwidth]{images/pipeline.png}
+	\caption{Pipeline representation of system.}
+\end{figure}
 
-\lipsum[1-1]
+\vspace{-12pt}
+
+We design a generation pipeline consisting of three steps: moderation, retrieval, and generation.
+Given a user query, the moderation step checks if a query is safe to handle, the retrieval step finds information relevant to the query, and the generation step crafts a response to the query.
+
+On a high level, our system consists of a frontend, backend, and infrastructure.
+The frontend handles the exposed logic, the backend handles the non-exposed logic, while the infrastructure hosts the backend and frontend.
 
 \section{Backend Design}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.8\textwidth]{images/backend-1.png}
+	\caption{Graphical representation of backend.}
+\end{figure}
+
+\vspace{-12pt}
+
+To ensure factuality, the retrieval step only retrieves information from documents defined as truthful.
+To ensure transparency, the generation step names each source from which information is retrieved.
+
+Given a set of documents, the system performs the following steps offline.
+
+\begin{enumerate}
+	\item \textbf{Chunking.} The system divides each document into smaller pieces called ``chunks''. This is performed to make downstream information consumption more manageable.
+	\item \textbf{Embedding.} The system maps each chunk to a numerical representation capturing the semantics of the chunk, called an ``embedding''. This is performed to allow for downstream semantic comparisons with user queries.
+	\item \textbf{Indexing.} The system stores each chunk and its corresponding embedding in a database optimised for embedding retrieval. This is performed to allow for efficient downstream retrieval of relevant chunks for a user query.
+\end{enumerate}
+
+Given a user query, the system performs the following steps online.
+
+\begin{enumerate}
+	\item \textbf{Moderation.} The system checks if the query seems safe to handle.
+	If it seems unsafe, the pipeline returns a generic response (e.g. ``Sorry, I cannot help with that.'') to the user; otherwise, the pipeline moves to the next step.
+	This is performed to protect the user and our system from any adverse effects that might result from sending an unsafe query to chat model.
+	\item \textbf{Retrieval.} The system finds the most relevant chunks to the query by computing a similarity score between the query and each chunk, and returns the highest-scoring chunks.
+	This is performed to retrieve relevant information for the query.
+	\item \textbf{Generation.} The system queries the chat model with the conversation, query, and chunks, and returns the response of the model.
+\end{enumerate}
+
+We had to make some design decisions for our vector database, inference provider, chunking algorithm, embedding model, vector search algorithm, and chat model.
+
+\begin{table}[H]
+	\centering
+	\begin{tabular}{l@{\qquad}lll}
+		\toprule
+		& \textbf{Chroma} & \textbf{Pinecone} & \textbf{Qdrant} \\
+		\midrule
+		\textbf{License class} & Open & Closed & Open \\
+		\textbf{GitHub stars} & ~25k & ~3k & ~27k \\
+		\bottomrule
+	\end{tabular}
+	\caption{Comparison between Chroma, Pinecone, and Qdrant.}
+\end{table}
+
+\vspace{-12pt}
+
+We found 3 vector database abstractions from our research: Chroma, Pinecone, and Qdrant.
+Ultimately, we settled on Qdrant as the open license class gives greater developmental control, and the larger community support---as measured by the number of GitHub stars---facilitates debugging.
+
+\begin{table}[H]
+	\centering
+	\begin{tabular}{l@{\qquad}lll}
+		\toprule
+		& \textbf{GroqCloud} & \textbf{OpenRouter} & \textbf{Vertex AI} \\
+		\midrule
+		\textbf{Relative model count} & Smallest & Largest & In-between \\
+		\textbf{Embedding model support} & Non-existent & Existent & Existent \\
+		\bottomrule
+	\end{tabular}
+	\caption{Comparison between GroqCloud, OpenRouter, and Vertex AI.}
+\end{table}
+
+\vspace{-12pt}
+
+We found 3 inference provider abstractions: GroqCloud, OpenRouter, and Vertex AI.
+Ultimately, we settled on OpenRouter as its model support provides developmental flexibility.
 
 \lipsum[1-3]
 

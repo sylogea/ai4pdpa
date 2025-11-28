@@ -1,0 +1,41 @@
+---
+config:
+  layout: elk
+  look: classic
+  theme: mc
+---
+flowchart LR
+    Document["Document"] --> Chunk["Chunk"]
+    Chunk --> ChunkEmbedding["Chunk Embedding"]
+    ChunkEmbedding --> VectorStore["Vector Store"]
+    MainStore["Main Store"] --> UserConversation["User Conversation"]
+    UserQuery["User Query"] --> UserQueryEmbedding["User Query Embedding"] & ModelContext["Model Context"]
+    VectorStore --> RelevantChunk["Relevant Chunk"]
+    UserQueryEmbedding --> RelevantChunk
+    UserConversation --> ModelContext
+    RelevantChunk --> ModelContext
+    ModelContext --> ModerationModelResponse["Moderation Model Response"] & ModeratedModelContext["⊕"]
+    ModerationModelResponse --> ModeratedModelContext
+    ModeratedModelContext -- if safe --> ChatModelResponse["Chat Model Response"]
+    ModeratedModelContext -- if unsafe --> SentinelChatResponse["Sentinel Chat Response"]
+
+---
+config:
+  layout: elk
+  look: classic
+  theme: mc
+---
+flowchart LR
+	Document["Document"] --> Chunk["Chunk"]
+	Chunk --> ChunkEmbedding["Chunk Embedding"]
+	ChunkEmbedding --> VectorStore["Vector Store"]
+	MainStore["Main Store"] --> UserConversation["User Conversation"]
+	UserQuery["User Query"] --> UserQueryEmbedding["User Query Embedding"] & ModelContext["Model Context"]
+	VectorStore --> RelevantChunk["Relevant Chunk"]
+	UserQueryEmbedding --> RelevantChunk
+	UserConversation --> ModelContext
+	RelevantChunk --> ModelContext
+	ModelContext --> ModerationModelResponse["Moderation Model Response"] & Merge((+))
+	ModerationModelResponse --> Merge
+	Merge -- if safe --> ChatModelResponse["Chat Model Response"]
+	Merge -- if unsafe --> SentinelChatResponse["Sentinel Chat Response"]
