@@ -12,7 +12,7 @@
 \usepackage[backend=biber,style=apa,natbib=true]{biblatex}
 \DeclareLanguageMapping{english}{english-apa}
 \addbibresource{references.bib}
-
+\DefineBibliographyStrings{english}{references = {References}}
 
 \renewcommand{\chaptername}{}
 \renewcommand{\thechapter}{\arabic{chapter}}
