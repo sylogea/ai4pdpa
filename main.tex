@@ -32,7 +32,63 @@
 
 \appendix
 
-\chapter{Additional Figures}
-\lipsum[1-2]
+\chapter{Supplementary Material}
+\label{app:supplementary-material}
+
+\section{Rational Utility}
+\label{app:rational-utility}
+
+Rational Utility, as defined by
+\[
+	U_\text{rational}
+	=
+	440A
+	+
+	220\left(
+		\frac{20}{P+7.43}
+	\right)^{0.7}
+	+
+	400M^{0.3}
+	+
+	180\left(
+		\frac{1}{1+T\exp(T-3)}
+	\right)
+\]
+decomposes into four objective components: accuracy, price, multimodality, and latency.
+Each term is a transformed version of a measured quantity, scaled by a contribution constant chosen from prior work on customer intention, loyalty, or adoption.
+The transformation shape and constant together determine how strongly that quantity influences the final score and where diminishing returns begin.
+
+The first term captures accuracy.
+Here $A\in\mathbb{R}_{[0,1]}$ is the empirical accuracy of a model on an evaluation dataset.
+Its contribution is scaled using the largest constant in the framework, reflecting findings that accuracy is the strongest predictor of user intention and retention in service environments \parencite{alhattami2025}.
+In the context of legal and compliance assistance, factual correctness is especially critical, so accuracy is treated as the dominant factor.
+Full accuracy yields the maximum contribution allocated to this dimension, while partial accuracy reduces the score proportionally.
+
+The second term captures pricing utility.
+Here, $P$ is the price per million tokens of combined input and output, as listed on OpenRouter.
+The functional form is decreasing in $P$: as a model becomes more expensive to run, its contribution to Rational Utility falls.
+The exponent induces diminishing sensitivity, so large price differences at the low end matter more than equally large differences at the high end, consistent with behavioural findings on price elasticity.
+The contribution constant is derived from reported beta sensitivities for price effects on customer concentration, and is capped such that pricing cannot contribute more utility than accuracy \parencite{tanantong2024}.
+This ensures that an extremely cheap but inaccurate model does not outrank a moderately priced, highly accurate one.
+
+The third term measures the benefit of multimodality.
+Here, $M$ is the number of input modalities, as listed on OpenRouter.
+Empirical work suggests that the availability of additional interaction channels modestly improves customer engagement and concentration \parencite{zhang2024}.
+We encode this with a sublinear exponent, which yields strong gains from adding the first few modalities but quickly introduces diminishing returns.
+The contribution constant reflects an upper bound comparable to, but slightly below, the weight of accuracy, acknowledging that modality breadth is valuable but should not overshadow factual performance.
+
+The final term reflects latency utility.
+Here, $T$ is the latency in seconds, as listed on OpenRouter.
+The chosen functional form behaves similarly to a squashed inverse curve: utility is high and near-saturated for low latencies, then declines sharply as response times exceed a few seconds, and eventually flattens out for very slow models.
+This shape aligns with user studies showing that delays beyond a small threshold significantly degrade perceived quality and willingness to continue using a system, while shaving off sub-second latency yields smaller marginal gains \parencite{kim2024}.
+The contribution constant is calibrated from reported beta sensitivities for time-related service attributes, using the mid-range estimate as a compromise between different studies.
+
+Together, these four terms produce a composite Rational Utility score that balances factual quality, cost, interaction richness, and responsiveness.
+The relative magnitudes of the contribution constants ensure that accuracy remains primary, while still rewarding models that are affordable, multimodal, and fast enough to support practical SME workflows.
+
+\section{Budget Summary}
+\label{app:budget-summary}
+
+We used the \href{https://calculator.aws/#/estimate?id=f3936da1c288edd9947a25383f2b1e58731e93eb}{AWS Pricing Calculator} to determine the infrastructure budget allocation.
 
 \end{document}

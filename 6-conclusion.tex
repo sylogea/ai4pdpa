@@ -31,15 +31,37 @@ This became the foundation for the Term 8 deployment plan.
 
 \section{Budget Summary}
 
+\begin{table}[H]
+	\centering
+	\begin{tabular}{l@{\qquad}lll}
+		\toprule
+		& \textbf{Unit cost} & \textbf{Units} & \textbf{Total cost} \\
+		\midrule
+		\textbf{Transportation} & SGD 30/cab & 16 cabs & SGD 480 \\
+		\textbf{Backend} & SGD 15/month & 7 months & SGD 105 \\
+		\textbf{Infrastructure} & SGD 108.75/month & 7 months & SGD 756 \\
+		\bottomrule
+	\end{tabular}
+	\caption{Project budget summary.}
+\end{table}
+
+\vspacebaselineskip
+
 The project's operating costs remain intentionally low to ensure that the platform is viable for SME adoption and long-term sustainability.
 Based on the current architecture, AWS infrastructure costs amount to approximately SGD 108 per month, covering App Runner compute, storage, load balancing, and operational monitoring.
 LLM usage through OpenRouter adds an estimated SGD 15 per month, bringing the total estimated monthly cost to roughly SGD 124 per month.
 One-time expenditures were minimal, with transport and logistics forming the primary non-technical cost.
 Overall, the cost profile aligns with AsiaCloud's requirement for a lightweight and affordable proof-of-concept that can be scaled or monetised in later phases without significant infrastructure burden.
 
-% A detailed cost breakdown is found in Appendix E.
+See Appendix~\ref{app:budget-summary} for more information.
 
 \section{Risk Assessment}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.6\textwidth]{images/ra-table.png}
+	\caption{Project risk assessment.}
+\end{figure}
 
 A comprehensive risk assessment was conducted to evaluate technical, operational, and project-execution risks that could affect system performance, data protection, or delivery timelines.
 Key technical risks included API rate limits, model hallucination, cloud misconfiguration, and retrieval errors, all of which were mitigated through Identity and Access Management (IAM) reviews, billing alerts, retrieval constraints, and controlled refusal behaviour.
@@ -47,7 +69,24 @@ Operational risks---such as accidental exposure of personal data through user in
 Workplace and project risks, including dependency on external services or bottlenecks in development capacity, were moderated through modular architecture design, shared code ownership, and an iterative sprint structure.
 After mitigation, all risks achieved low residual scores, providing a stable foundation for Term 8 development and deployment.
 
+See Appendix~\ref{app:risk-assessment} for more information.
+
 \section{Outlook}
+
+\begin{figure}[H]
+	\centering
+	\begin{minipage}{0.49\textwidth}
+		\centering
+		\includegraphics[width=\textwidth]{images/term-7-timeline.png}
+	\end{minipage}
+	\begin{minipage}{0.49\textwidth}
+		\centering
+		\includegraphics[width=\textwidth]{images/term-8-timeline.png}
+	\end{minipage}
+	\caption{Outlooks for Term 7 and Term 8.}
+\end{figure}
+
+\vspacebaselineskip
 
 Through iterative exploration in frontend, backend, cloud infrastructure, testing, and benchmarking, the team clarified the system architecture and identified the most feasible approach for a scalable compliance assistant.
 Early testing also confirmed the value of retrieval-grounded responses and highlighted key areas---such as chat history design, training workflows, and analytics requirements---that will shape the next phase.

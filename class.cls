@@ -1,4 +1,4 @@
-\LoadClass[12pt]{report}
+\LoadClass[11pt]{report}
 
 \usepackage[a4paper,margin=1in]{geometry}
 \usepackage{amsfonts,amsmath,amssymb,amsthm,bm,booktabs,graphicx,hyperref,lipsum,microtype,subcaption,times}

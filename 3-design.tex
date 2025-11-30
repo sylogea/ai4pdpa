@@ -169,11 +169,49 @@ We settled on React as
 the support for interruptible reconciliation keeps interfaces responsive under load,
 and the larger community support---as measured by the number of GitHub stars---facilitates debugging.
 
-We elected to use Next.js 15 with a modular component architecture.
+\begin{table}[H]
+	\centering
+	\begin{tabular}{l@{\qquad}lll}
+		\toprule
+		& \textbf{Angular} & \textbf{React} & \textbf{Vue.js} \\
+		\midrule
+		\textbf{Interruptible reconciliation support?} & No & Yes & No \\
+		\textbf{GitHub stars} & $\sim$100k & $\sim$240k & $\sim$210k \\
+		\bottomrule
+	\end{tabular}
+	\caption{Comparison between Angular, React, and Vue.js.}
+\end{table}
+
+\vspacebaselineskip
+
+From our research, we found 2 full-stack React frameworks: Next.js and Remix.
+
+\begin{table}[H]
+	\centering
+	\begin{tabular}{l@{\qquad}ll}
+		\toprule
+		& \textbf{Next.js} & \textbf{Remix} \\
+		\midrule
+		\textbf{Incremental static regeneration support?} & Yes & No \\
+		\textbf{Built-in API route support?} & Yes & No \\
+		\bottomrule
+	\end{tabular}
+	\caption{Comparison between Next.js and Remix.}
+\end{table}
+
+\vspacebaselineskip
+
+Here, API refers to ``application programming interface''.
+
+We settled on Next.js as
+the support for incremental static regeneration improves load performance, and
+the support for built-in API routes simplifies server-side integration.
+
+We design a modular component architecture to facilitate development.
 Routing and layout reside in the main application layer, and reusable interface elements are factored into separate components.
 Global state, including conversation history and UI configuration, is maintained in a central store built with Redux Toolkit.
 This separation of concerns improves readability and supports future extensions.
-Configuration is driven by environment variables that provide the backend application programming interface (API) base uniform resource locator (URL) and related parameters.
+Configuration is driven by environment variables that provide the backend API base uniform resource locator (URL) and related parameters.
 This allows the same codebase to run in development, staging, and production without code changes.
 To keep latency predictable and token usage bounded, the frontend limits each conversation to a fixed number of recent messages, discarding older turns from the request while retaining them in the on-screen history.
 
@@ -206,7 +244,7 @@ From our research, we identified three cloud provider abstractions: Amazon Web S
 		\toprule
 		& \textbf{AWS} & \textbf{Azure} & \textbf{GCP} \\
 		\midrule
-		\textbf{Market share} & 29\% & 22\% & 12\% \\
+		\textbf{Market share} & 29\% \parencite{statista2025} & 20\% \parencite{statista2025} & 13\% \parencite{statista2025} \\
 		\textbf{Global region count} & 36 & 60 & 42 \\
 		\textbf{Availability zone count} & 114 & 126 & 127 \\
 		\textbf{Minimum service count} & 200 & 200 & 100 \\
@@ -240,7 +278,9 @@ Within AWS, we found six compute service abstractions from our research: Elastic
 
 \vspacebaselineskip
 
-Here, virtual central processing unit (vCPU) hours and gigabyte (GB) hours measure compute and memory usage, while load balancer capacity unit (LCU) hours are used for managed load balancers. To handle dynamic traffic, integrate with autoscaling, and support future features, AWS App Runner was chosen as the primary deployment service, allowing the number of running instances to grow or shrink with demand.
+Here, vCPU refers to ``virtual central processing unit'' hours, GB refers to gigabyte, and LCU refers to ``load balancer capacity unit''.
+
+To handle dynamic traffic, integrate with autoscaling, and support future features, AWS App Runner was chosen as the primary deployment service, allowing the number of running instances to grow or shrink with demand.
 
 To deploy the frontend and backend, the system performs the following steps.
 
