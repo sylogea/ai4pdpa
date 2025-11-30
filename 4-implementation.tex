@@ -5,7 +5,7 @@
 Term 7 saw the creation of the first system implementations in two stages: Iteration 1 and Iteration 2.
 Iteration 2 builds upon Iteration 1 incrementally, to ensure a manageable growth of system complexity.
 
-In Iteration 1, we created our first prototype: Prototype 1.
+In Iteration 1, we developed our first prototype: Prototype 1.
 
 \begin{figure}[H]
 	\centering
@@ -28,7 +28,7 @@ However, the prototype also had notable shortcomings.
 It did not maintain memory within conversations and spent unnecessary compute to rebuild the vector store on each run.
 Overall, Prototype 1 established a functional baseline but required several improvements to support a usable workflow.
 
-In Iteration 2, we expanded Prototype 1 with a set of core functional upgrades to create our second prototype: Prototype 2.
+In Iteration 2, we expanded Prototype 1 with a set of core functional upgrades to develop our second prototype: Prototype 2.
 
 \begin{figure}[H]
 	\centering
@@ -45,7 +45,12 @@ In Iteration 2, we expanded Prototype 1 with a set of core functional upgrades t
 
 \vspacebaselineskip
 
-Prototype 2 introduced several user-facing improvements.
+Prototype 2 introduced several backend improvements.
+The system ensured turns within a conversation were accumulated, by feeding past messages in the same conversation to the chat model as context on each turn.
+This made the chatbot more user-friendly, as it meant the chatbot could respond using past messages in the same conversation.
+The system also used a 256-Bit Secure Hash Algorithm (SHA-256) to generate a fingerprint based on information about the documents, chunking algorithm, and embedding model.
+This made system startup more efficient, as fingerprints were checked before vector store building.
+Prototype 2 also introduced several frontend improvements.
 The chat interface produced progressive, token-by-token responses.
 A consolidated account page enabled management of preferences, account details, and privacy settings.
 The interface was redesigned to be responsive across devices, and a dark--light mode toggle was added.

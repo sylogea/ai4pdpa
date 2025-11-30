@@ -58,7 +58,7 @@ We had to make several design decisions for our vector store, inference provider
 		& \textbf{Chroma} & \textbf{Pinecone} & \textbf{Qdrant} \\
 		\midrule
 		\textbf{License class} & Open & Closed & Open \\
-		\textbf{GitHub stars} & ~25k & ~3k & ~27k \\
+		\textbf{GitHub stars} & $\sim$25k & $\sim$3k & $\sim$27k \\
 		\bottomrule
 	\end{tabular}
 	\caption{Comparison between Chroma, Pinecone, and Qdrant.}
@@ -136,8 +136,8 @@ We settled on these three models as candidates for more rigorous downstream eval
 The frontend exposes the PDPA chatbot to SME users through a web interface and aims to minimise interaction friction.
 
 We considered two user interface (UI) interaction modes: anonymous access and authenticated access.
-Anonymous access requires no registration and lets users ask questions immediately.
-Authenticated access requires registration and lets accounts retain preferences and past conversations.
+Anonymous access requires no registration and lets users ask questions immediately, whereas
+authenticated access requires registration and lets users retain preferences and past conversations through user accounts.
 
 \begin{figure}[H]
 	\centering
@@ -149,11 +149,30 @@ Authenticated access requires registration and lets accounts retain preferences 
 
 Given SME needs and the scope of our minimum viable product, we adopt anonymous access to reduce barriers and shorten time-to-value, deferring account-based features to a later phase.
 
-The frontend is implemented with Next.js 15 using a modular component architecture.
-Routing and layout reside in the main application layer, while reusable interface elements are factored into separate components.
+\begin{table}[H]
+	\centering
+	\begin{tabular}{l@{\qquad}lll}
+		\toprule
+		& \textbf{Angular} & \textbf{React} & \textbf{Vue.js} \\
+		\midrule
+		\textbf{Interruptible reconciliation support?} & No & Yes & No \\
+		\textbf{GitHub stars} & $\sim$100k & $\sim$240k & $\sim$210k \\
+		\bottomrule
+	\end{tabular}
+	\caption{Comparison between Angular, React, and Vue.js.}
+\end{table}
+
+\vspacebaselineskip
+
+From our research, we found 3 frontend frameworks: Angular, React, and Vue.js.
+We settled on React as
+the support for interruptible reconciliation keeps interfaces responsive under load,
+and the larger community support---as measured by the number of GitHub stars---facilitates debugging.
+
+We elected to use Next.js 15 with a modular component architecture.
+Routing and layout reside in the main application layer, and reusable interface elements are factored into separate components.
 Global state, including conversation history and UI configuration, is maintained in a central store built with Redux Toolkit.
 This separation of concerns improves readability and supports future extensions.
-
 Configuration is driven by environment variables that provide the backend application programming interface (API) base uniform resource locator (URL) and related parameters.
 This allows the same codebase to run in development, staging, and production without code changes.
 To keep latency predictable and token usage bounded, the frontend limits each conversation to a fixed number of recent messages, discarding older turns from the request while retaining them in the on-screen history.
