@@ -1,8 +1,8 @@
 \chapter{System Validation}
 
-\section{System Verification}
+\section{Verification}
 
-To validate system correctness, we conducted unit, integration, and end-to-end tests.
+To validate system correctness, we created and conducted unit, integration, and end-to-end tests.
 
 \begin{enumerate}
 	\item \textbf{Unit.} We conducted tests using controlled inputs and expected outputs on individual functions.
@@ -12,9 +12,11 @@ To validate system correctness, we conducted unit, integration, and end-to-end t
 
 We iteratively improved our system to ensure all tests passed.
 
-\section{System Evaluation}
+\section{Evaluation}
 
-To identify the most suitable model from our chosen candidate set of chat models, we defined an overall utility measure combining objective and subjective components.
+To validate system quality, we created and ran evaluative benchmarks to study the capabilities of the models and our latest retrieval method.
+To do so, we needed to define a measure of performance.
+We defined an overall utility measure combining objective and subjective components.
 As a sum of Rational Utility and Subjective Utility, we define Overall Utility by
 \[
 	U_\text{overall} = U_\text{rational} + U_\text{subjective}
@@ -50,7 +52,6 @@ Two categories are used, each weighted by a utility constant of five hundred: th
 For each category, the utility contribution is determined by the proportion of responses meeting the desired quality standard.
 
 Term 7 saw the evaluation of the objective component of the benchmark.
-
 First, we crafted two datasets: PDPC22 and APDPC22.
 PDPC22 contains twenty-two question-answer pairs from an educational quiz-like game by the PDPC,
 and APDPC22 is an augmented version of PDPC22, which rephrases each question to adopt a more informal tone.

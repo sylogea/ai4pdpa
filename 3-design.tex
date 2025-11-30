@@ -15,7 +15,7 @@ Given a user query, the moderation step checks whether the query is safe to hand
 On a high level, our system consists of a frontend, backend, and infrastructure.
 The frontend handles the exposed logic, the backend handles the non-exposed logic, while the infrastructure hosts the backend and frontend.
 
-\section{Backend Design}
+\section{Backend}
 
 \begin{figure}[H]
 	\centering
@@ -114,7 +114,7 @@ Sorting the models officially supported by OpenRouter with those properties by p
 
 Ultimately, we kept these three models as candidates for more rigorous downstream evaluative ablations to decide model deployment, following the industry practice of architecting systems that facilitate model switching \parencite{ng2025}.
 
-\section{Frontend Design}
+\section{Frontend}
 
 The frontend exposes the PDPA chatbot to SME users through a web interface and aims to minimise interaction friction.
 
@@ -158,7 +158,7 @@ Given a user query, the frontend performs the following steps online.
 	Network and parsing errors are caught and surfaced as concise messages in the chat, so failures degrade gracefully and remain visible to users and developers.
 \end{enumerate}
 
-\section{Infrastructure Design}
+\section{Infrastructure}
 
 For deployment, the system requires a cloud platform that can host both the frontend and backend as containers, expose them securely to the internet, and scale with changes in user traffic.
 
