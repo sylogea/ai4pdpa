@@ -3,18 +3,20 @@
 \section{Motivation}
 
 Rapid digitalisation has transformed how organisations collect and use personal data to deliver services, optimise operations, and support decision-making \parencite{zul2022}.
-In Singapore, this shift is amplified by national drives toward Smart Nation goals and widespread artificial intelligence (AI) adoption \parencite{choudhury2024}.
+In Singapore, this shift is amplified by national drives toward Smart Nation goals and widespread AI adoption \parencite{choudhury2024}.
 As data use increases, so do risks associated with misuse, unauthorised access, and large-scale breaches.
 Recent cases illustrate these risks.
-For example, Marina Bay Sands was fined SGD\$315,000 after a breach affecting over 665,000 customer records, demonstrating that even mature organisations face difficulties in maintaining strong data protection practices \parencite{chan2025}.
-To safeguard individuals while supporting innovation, the Personal Data Protection Act (PDPA) was introduced to set baseline obligations for all organisations handling personal data \parencite{pdpc2023}.
-However, compliance remains challenging. PDPA guidelines are extensive, spread across multiple documents, and written for readers with legal or technical expertise. As regulations evolve, many organisations---particularly, small and medium enterprises (SMEs)---struggle to interpret requirements correctly.
+For example, Marina Bay Sands was fined SGD 315{,}000 after a breach affecting more than 665{,}000 customer records, demonstrating that even mature organisations face difficulties in maintaining strong data protection practices \parencite{chan2025}.
+To safeguard individuals while supporting innovation, the PDPA was introduced to set baseline obligations for all organisations handling personal data \parencite{pdpc2023}.
+However, compliance remains challenging.
+PDPA guidelines are extensive, spread across multiple documents, and written for readers with legal or technical expertise.
+As regulations evolve, many organisations---particularly SMEs---struggle to interpret requirements correctly.
 This difficulty is evident in common operational errors, such as the Credit Counselling Singapore incident where email addresses were exposed due to incorrect use of the ``To'' field \parencite{pdpc2017ccs}.
 Such examples highlight the need for accessible and scenario-specific compliance guidance.
 
 \section{Problem Statement}
 
-Although resources written by the Personal Data Protection Commission (PDPC) resources are publicly available, they are not always accessible to non-specialists.
+Although resources produced by the Personal Data Protection Commission (PDPC) are publicly available, they are not always accessible to non-specialists.
 Many SMEs lack legal support and rely on ad-hoc interpretations or outdated practices.
 Existing commercial compliance tools are often costly or too complex, while general-purpose AI chatbots may hallucinate, mix regulatory frameworks, or offer unsafe advice.
 This project seeks to address these gaps by developing AI4PDPA, a modular, AI-assisted compliance platform for Singaporean SMEs.
@@ -36,12 +38,19 @@ The system's architecture will emphasise modularity, cost efficiency, and extens
 
 \section{Stakeholders}
 
-The platform is designed for users who interact with PDPA obligations in day-to-day SME operations. SMEs form over 99\% of Singapore's enterprises \parencite{lim2025}, and many have limited resources for formal compliance, making accessible PDPA support especially important.
+The platform is designed for users who interact with PDPA obligations in day-to-day SME operations.
+SMEs form over 99\% of Singapore's enterprises \parencite{lim2025}, and many have limited resources for formal compliance, making accessible PDPA support especially important.
 Operational staff---including administrative, customer service, sales, and human resources personnel---handle personal data frequently but often rely on informal or low-digitisation workflows such as spreadsheets or email \parencite{navarrete2019}.
-These users require quick clarification when performing tasks such as collecting customer details, responding to access requests, or drafting consent notices. The chatbot and document templates are designed to support these immediate operational needs.
-Managers and internal data stewards typically assume PDPA responsibilities in addition to their primary roles. They require clearer guidance for interpreting PDPA obligations, onboarding staff, and ensuring consistent handling of personal data across the organisation. This group benefits from structured training modules and aggregated analytics that highlight recurring compliance gaps.
-SME owners and leadership teams use higher-level insights to evaluate organisational compliance readiness. They rely on the dashboard to understand frequently asked PDPA questions, training participation, and potential areas of risk that require process changes or additional staff support.
-Beyond end-users, AsiaCloud Solutions is a key stakeholder as both industry partner and future maintainer. Their interests include evaluating user behaviours, validating market demand, and identifying features suitable for a commercialised product. The platform's modular architecture and server-based chat logging were designed to support this longer-term vision.
+These users require quick clarification when performing tasks such as collecting customer details, responding to access requests, or drafting consent notices.
+The chatbot and document templates are designed to support these immediate operational needs.
+Managers and internal data stewards typically assume PDPA responsibilities in addition to their primary roles.
+They require clearer guidance for interpreting PDPA obligations, onboarding staff, and ensuring consistent handling of personal data across the organisation.
+This group benefits from structured training modules and aggregated analytics that highlight recurring compliance gaps.
+SME owners and leadership teams use higher-level insights to evaluate organisational compliance readiness.
+They rely on the dashboard to understand frequently asked PDPA questions, training participation, and potential areas of risk that require process changes or additional staff support.
+Beyond end users, AsiaCloud Solutions is a key stakeholder as both industry partner and future maintainer.
+Their interests include evaluating user behaviours, validating market demand, and identifying features suitable for a commercialised product.
+The platform's modular architecture and server-based chat logging were designed to support this longer-term vision.
 While not within the immediate scope of the project, the architecture allows for future expansion to industry associations, training providers, and larger organisations that require lightweight PDPA reference tools.
 
 \section{Success Criteria}

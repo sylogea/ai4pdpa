@@ -25,14 +25,14 @@ In Iteration 1, we created our first prototype: Prototype 1.
 \vspacebaselineskip
 
 The prototype showed clear strengths.
-It implemented the computational graph correctly on the backend, and rendered the output of the chat model without token artifacts on the frontend.
+It implemented the computational graph correctly on the backend and rendered the output of the chat model without token artefacts on the frontend.
 However, the prototype also had notable shortcomings.
-It did not maintain memory within conversations, and spent unnecessary compute to rebuild the vector store on each run.
+It did not maintain memory within conversations and spent unnecessary compute to rebuild the vector store on each run.
 Overall, Prototype 1 established a functional baseline but required several improvements to support a usable workflow.
 
 \subsection{Iteration 2}
 
-In Iteration 2, we expanded Prototype 1 with a set of core functional upgrades, to create our second prototype: Prototype 2.
+In Iteration 2, we expanded Prototype 1 with a set of core functional upgrades to create our second prototype: Prototype 2.
 
 \begin{figure}[H]
 	\centering
@@ -52,8 +52,8 @@ In Iteration 2, we expanded Prototype 1 with a set of core functional upgrades, 
 Prototype 2 introduced several user-facing improvements.
 The chat interface produced progressive, token-by-token responses.
 A consolidated account page enabled management of preferences, account details, and privacy settings.
-The interface was redesigned to be responsive across devices, and a dark–light mode toggle was added.
-Chats could also be exported as PDF files, and past conversations were stored in the browser through LocalStorage.
+The interface was redesigned to be responsive across devices, and a dark--light mode toggle was added.
+Chats could also be exported as Portable Document Format (PDF) files, and past conversations were stored in the browser through LocalStorage.
 Overall, these additions formed a more complete and usable second prototype.
 
 \section{Term 8}
@@ -63,17 +63,19 @@ Term 8 will focus on strengthening deployment reliability and expanding the syst
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=0.95\textwidth]{images/planned-architecture.png}
-	\caption{Diagram of planned system architecture.}
+	\caption{Diagram of the planned system architecture.}
 \end{figure}
 
 \vspacebaselineskip
 
-A continuous integration and deployment (CI/CD) pipeline will be introduced using GitHub Actions. Each push to the main branch will trigger automated tests, build container images, publish them to the registry, and update the ECS services running on Fargate. This ensures that only validated builds are deployed and reduces manual operational overhead while maintaining consistency between the codebase and the live environment.
+An automated CI/CD pipeline will be introduced using GitHub Actions.
+Each push to the main branch will trigger automated tests, build container images, publish them to the registry, and update the running services on AWS App Runner.
+This ensures that only validated builds are deployed and reduces manual operational overhead while maintaining consistency between the codebase and the live environment.
 
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=0.95\textwidth]{images/timeline.png}
-	\caption{Diagram of planned project timeline.}
+	\caption{Diagram of the planned project timeline.}
 \end{figure}
 
 \vspacebaselineskip

@@ -5,12 +5,12 @@ To support our goal of helping Singaporean SMEs comply with the PDPA, we design 
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=0.5\textwidth]{images/pipeline.png}
-	\caption{Pipeline representation of system.}
+	\caption{Pipeline representation of the system.}
 \end{figure}
 
 \vspacebaselineskip
 
-Given a user query, the moderation step checks if a query is safe to handle, the retrieval step finds information relevant to the query, and the generation step crafts a response to the query.
+Given a user query, the moderation step checks whether the query is safe to handle, the retrieval step finds information relevant to the query, and the generation step crafts a response to the query.
 
 On a high level, our system consists of a frontend, backend, and infrastructure.
 The frontend handles the exposed logic, the backend handles the non-exposed logic, while the infrastructure hosts the backend and frontend.
@@ -20,7 +20,7 @@ The frontend handles the exposed logic, the backend handles the non-exposed logi
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=0.95\textwidth]{images/backend-3.png}
-	\caption{Graphical representation of backend.}
+	\caption{Graphical representation of the backend.}
 \end{figure}
 
 \vspacebaselineskip
@@ -31,9 +31,12 @@ To ensure transparency, the generation step names each source from which informa
 Given a set of documents, the system performs the following steps offline.
 
 \begin{enumerate}
-	\item \textbf{Chunking.} The system divides each document into smaller pieces called ``chunks''. This is performed to make downstream information consumption more manageable.
-	\item \textbf{Embedding.} The system maps each chunk to a numerical representation capturing the semantics of the chunk, called an ``embedding''. This is performed to allow for downstream semantic comparisons with user queries.
-	\item \textbf{Indexing.} The system stores each chunk and its corresponding embedding in a database optimised for embedding retrieval. This is performed to allow for efficient downstream retrieval of relevant chunks for a user query.
+	\item \textbf{Chunking.} The system divides each document into smaller pieces called ``chunks''.
+	This is performed to make downstream information consumption more manageable.
+	\item \textbf{Embedding.} The system maps each chunk to a numerical representation capturing the semantics of the chunk, called an ``embedding''.
+	This is performed to allow for downstream semantic comparisons with user queries.
+	\item \textbf{Indexing.} The system stores each chunk and its corresponding embedding in a database optimised for embedding retrieval.
+	This is performed to allow for efficient downstream retrieval of relevant chunks for a user query.
 \end{enumerate}
 
 Given a user query, the system performs the following steps online.
@@ -41,13 +44,14 @@ Given a user query, the system performs the following steps online.
 \begin{enumerate}
 	\item \textbf{Moderation.} The system checks if the query seems safe to handle.
 	If it seems unsafe, the pipeline returns a generic response (e.g. ``Sorry, I cannot help with that.'') to the user; otherwise, the pipeline moves to the next step.
-	This is performed to protect the user and our system from any adverse effects that might result from sending an unsafe query to chat model.
+	This is performed to protect the user and our system from any adverse effects that might result from sending an unsafe query to the chat model.
 	\item \textbf{Retrieval.} The system finds the most relevant chunks to the query by computing a similarity score between the query and each chunk, and returns the highest-scoring chunks.
 	This is performed to retrieve relevant information for the query.
 	\item \textbf{Generation.} The system queries the chat model with the conversation, query, and chunks, and returns the response of the model.
 \end{enumerate}
 
-We had to make some design decisions for our inference provider, embedding model, and chat model. We found 3 inference provider abstractions from our research: GroqCloud, OpenRouter, and Vertex AI.
+We had to make several design decisions for our inference provider, embedding model, and chat model.
+From our research, we found three inference provider abstractions: GroqCloud, OpenRouter, and Vertex AI.
 
 \begin{table}[H]
 	\centering
@@ -66,7 +70,7 @@ We had to make some design decisions for our inference provider, embedding model
 
 Ultimately, we settled on OpenRouter as its model support provides the greatest developmental flexibility.
 For our embedding model, we wanted a model with a context size greater than 512 tokens for input flexibility.
-Sorting the models officially supported by OpenRouter with that property by price, the top 3 models were OpenAI's Text Embedding 3 Small (TE3-Small), BAAI's BGE-M3 (BGE-M3), and Qwen's Qwen3 Embedding 8B (QE-8B).
+Sorting the models officially supported by OpenRouter with that property by price, the top three models were OpenAI's Text Embedding 3 Small (TE3-Small), BAAI's BGE-M3 (BGE-M3), and Qwen's Qwen3 Embedding 8B (QE-8B).
 
 \begin{table}[H]
 	\centering
@@ -83,11 +87,13 @@ Sorting the models officially supported by OpenRouter with that property by pric
 
 \vspacebaselineskip
 
-Ultimately, we settled on QE-8B as the higher context size gives input flexibility, and the higher price adds negligible cost.
+Ultimately, we settled on QE-8B, as the higher context size gives input flexibility and the higher price adds negligible cost.
 For our chat model, we wanted a model with
 an average latency within 1 second and throughput no less than 48 tokens per second for responsiveness,
-a context size no less than 128,000 tokens for in-conversation memory, input modalities including text and image for input flexibility, and a maximum output size no less than 8,000 tokens for output flexibility.
-Sorting the models officially supported by OpenRouter with that property by price, the top 3 models were OpenAI's GPT 5 Chat (gpt-5-chat), Google's Gemini 2.5 Flash (gemini-2.5-flash), and Meta's Llama 4 Maverick (llama-4-maverick).
+a context size no less than 128,000 tokens for in-conversation memory,
+input modalities including text and image for input flexibility, and
+a maximum output size no less than 8,000 tokens for output flexibility.
+Sorting the models officially supported by OpenRouter with those properties by price, the top three models were OpenAI's GPT 5 Chat (gpt-5-chat), Google's Gemini 2.5 Flash (gemini-2.5-flash), and Meta's Llama 4 Maverick (llama-4-maverick).
 
 \begin{table}[H]
 	\centering
@@ -106,7 +112,7 @@ Sorting the models officially supported by OpenRouter with that property by pric
 
 \vspacebaselineskip
 
-Ultimately, we kept these 3 models as candidates for more rigorous downstream evaluative ablations to decide model deployment, following the industry practice of architecting systems that facilitate model switching \parencite{ng2025}.
+Ultimately, we kept these three models as candidates for more rigorous downstream evaluative ablations to decide model deployment, following the industry practice of architecting systems that facilitate model switching \parencite{ng2025}.
 
 \section{Frontend Design}
 
@@ -119,7 +125,7 @@ Authenticated access requires registration and lets accounts retain preferences 
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=0.95\linewidth]{images/frontend-full.png}
-	\caption{Low-fidelity sketches of frontend UI.}
+	\caption{Low-fidelity sketches of the frontend UI.}
 \end{figure}
 
 \vspacebaselineskip
@@ -156,7 +162,7 @@ Given a user query, the frontend performs the following steps online.
 
 For deployment, the system requires a cloud platform that can host both the frontend and backend as containers, expose them securely to the internet, and scale with changes in user traffic.
 
-We found 3 cloud provider abstractions from our research: Amazon Web Services (AWS), Microsoft Azure (Azure), and Google Cloud Platform (GCP).
+From our research, we identified three cloud provider abstractions: Amazon Web Services, Microsoft Azure (Azure), and Google Cloud Platform (GCP).
 
 \begin{table}[H]
 	\centering
@@ -177,7 +183,7 @@ We found 3 cloud provider abstractions from our research: Amazon Web Services (A
 
 AWS was selected for its large global footprint, mature support for containerised workloads, and close alignment with AsiaCloud's existing infrastructure, making it suitable for rapid prototyping and later production deployment.
 
-Within AWS, we found 6 compute service abstractions from our research: Elastic Compute Cloud (EC2), Lambda, Fargate, App Runner, Lightsail, and Elastic Beanstalk.
+Within AWS, we found six compute service abstractions from our research: Elastic Compute Cloud (EC2), Lambda, Fargate, App Runner, Lightsail, and Elastic Beanstalk.
 
 \begin{table}[H]
 	\centering
@@ -198,7 +204,7 @@ Within AWS, we found 6 compute service abstractions from our research: Elastic C
 
 \vspacebaselineskip
 
-To handle dynamic traffic, integrate with autoscaling, and support future features, Fargate was chosen as the primary compute layer, allowing the number of running tasks to grow or shrink with demand.
+Here, virtual central processing unit (vCPU) hours and gigabyte (GB) hours measure compute and memory usage, while load balancer capacity unit (LCU) hours are used for managed load balancers. To handle dynamic traffic, integrate with autoscaling, and support future features, AWS App Runner was chosen as the primary deployment service, allowing the number of running instances to grow or shrink with demand.
 
 To deploy the frontend and backend, the system performs the following steps.
 

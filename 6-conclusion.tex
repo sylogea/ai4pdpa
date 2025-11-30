@@ -7,32 +7,35 @@ We validated the problem through literature review, market analysis, and discuss
 This validation informed the design of the core system architecture and the selection of the frontend, backend, and cloud technologies.
 
 An initial chatbot prototype was developed with basic retrieval capabilities, allowing PDPA-aligned responses grounded in official PDPC documents.
-Three iterations improved UI design, retrieval quality, safety behaviour, and early features such as conversation storage, PDF export, and refusal logic.
+Two iterations improved UI design, retrieval quality, safety behaviour, and early features such as conversation storage, PDF export, and refusal logic.
 Benchmarking of three LLM candidates was conducted using a preliminary RAG pipeline to reduce hallucination rates.
 
-From an engineering standpoint, Term 7 included setting up the cloud deployment pathway, comparing AWS compute options, and implementing a basic CI workflow.
+From an engineering standpoint, Term 7 included setting up the cloud deployment pathway, comparing AWS compute options, and implementing a basic continuous integration workflow.
 The team also drafted the structure and data flow for the training platform.
 These efforts provided the technical clarity and feasibility checks required for full implementation in Term 8.
 
 \section{Insights}
 
-Several insights from Term 7 informed the priorities for Term 8. First, retrieval-based grounding is essential for accuracy. Early tests showed that even strong models occasionally mixed PDPA with foreign regulations such as the GDPR, underscoring the need for a tightly scoped retrieval corpus and jurisdiction-specific prompting. This guided both our model-selection criteria and the structure of the RAG pipeline.
+Several insights from Term 7 informed the priorities for Term 8.
+First, retrieval-based grounding is essential for accuracy.
+Early tests showed that even strong models occasionally mixed PDPA with foreign regulations such as the GDPR, underscoring the need for a tightly scoped retrieval corpus and jurisdiction-specific prompting.
+This guided both our model-selection criteria and the structure of the RAG pipeline.
 
 Second, discussions with AsiaCloud highlighted the importance of modularity for future commercialisation.
 Each component---chatbot, document templates, training modules, and analytics---must operate independently so AsiaCloud can scale or monetise them selectively.
 This shaped decisions around architecture, storage, and sequencing of development.
 
-Risk assessment exercises also reinforced the need for clear safeguards, including refusal behaviour, input sanitisation, and strict data-minimisation aligned with PDPA requirements.
+Risk assessment exercises also reinforced the need for clear safeguards, including refusal behaviour, input sanitisation, and strict data minimisation aligned with PDPA requirements.
 These considerations influenced prompting strategy, guardrails, and the move toward controlled server-side storage.
 
-Finally, AWS exploration showed that managed compute services such as Fargate offer a good balance of performance, scalability, and operational simplicity.
+Finally, AWS exploration showed that managed compute services such as App Runner offer a good balance of performance, scalability, and operational simplicity.
 This became the foundation for the Term 8 deployment plan.
 Together, these insights provide a focused direction for completing the platform in the next phase.
 
 \section{Budget Summary}
 
 The project's operating costs remain intentionally low to ensure that the platform is viable for SME adoption and long-term sustainability.
-Based on the current architecture, AWS infrastructure costs amount to approximately SGD 108 per month, covering Fargate compute, storage, load balancing, and operational monitoring.
+Based on the current architecture, AWS infrastructure costs amount to approximately SGD 108 per month, covering App Runner compute, storage, load balancing, and operational monitoring.
 LLM usage through OpenRouter adds an estimated SGD 15 per month, bringing the total estimated monthly cost to roughly SGD 124 per month.
 These costs reflect real deployment behaviour observed during Term 7 testing and will be refined as additional Term 8 features come online.
 One-time expenditures were minimal, with transport and logistics forming the primary non-technical cost.
@@ -43,7 +46,7 @@ Overall, the cost profile aligns with AsiaCloud's requirement for a lightweight 
 \section{Risk Assessment}
 
 A comprehensive risk assessment was conducted to evaluate technical, operational, and project-execution risks that could affect system performance, data protection, or delivery timelines.
-Key technical risks included API rate limits, model hallucination, cloud misconfiguration, and retrieval errors, all of which were mitigated through IAM reviews, billing alerts, retrieval constraints, and controlled refusal behaviour.
+Key technical risks included API rate limits, model hallucination, cloud misconfiguration, and retrieval errors, all of which were mitigated through Identity and Access Management (IAM) reviews, billing alerts, retrieval constraints, and controlled refusal behaviour.
 Operational risks---such as accidental exposure of personal data through user inputs or unsafe document uploads---were addressed using anonymised test cases, input sanitisation rules, and clear user-facing warnings.
 Workplace and project risks, including dependency on external services or bottlenecks in development capacity, were moderated through modular architecture design, shared code ownership, and an iterative sprint structure.
 After mitigation, all risks achieved low residual scores, providing a stable foundation for Term 8 development and deployment.
@@ -52,7 +55,7 @@ After mitigation, all risks achieved low residual scores, providing a stable fou
 
 Term 7 established the foundation for AI4PDPA by validating the problem context, consolidating requirements with AsiaCloud, and developing the first end-to-end prototype of the platform.
 Through iterative exploration in frontend, backend, cloud infrastructure, testing, and benchmarking, the team clarified the system architecture and identified the most feasible approach for a scalable compliance assistant.
-Early testing also confirmed the value of retrieval-grounded responses and highlighted key areas—such as chat history design, training workflows, and analytics requirements—that will shape the next phase.
+Early testing also confirmed the value of retrieval-grounded responses and highlighted key areas---such as chat history design, training workflows, and analytics requirements---that will shape the next phase.
 
 Looking ahead, Term 8 will focus on completing the core platform components: server-based chat history, PDPA document generation, the training module, and the analytics dashboard.
 Development will follow the planned sprint structure, beginning with stabilising the chatbot and document flows, followed by delivering a functional training platform and a multi-metric analytics dashboard for AsiaCloud.
