@@ -4,14 +4,13 @@ To support our goal of helping Singaporean SMEs comply with the PDPA, we design 
 
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=0.5\textwidth]{images/pipeline.png}
+	\includegraphics[width=0.6\textwidth]{images/pipeline.png}
 	\caption{Pipeline representation of the system.}
 \end{figure}
 
 \vspacebaselineskip
 
 Given a user query, the moderation step checks whether the query is safe to handle, the retrieval step finds information relevant to the query, and the generation step crafts a response to the query.
-
 On a high level, our system consists of a frontend, backend, and infrastructure.
 The frontend handles the exposed logic, the backend handles the non-exposed logic, while the infrastructure hosts the backend and frontend.
 
@@ -35,7 +34,7 @@ Given a set of documents, the system performs the following steps offline.
 	This is performed to make downstream information consumption more manageable.
 	\item \textbf{Embedding.} The system maps each chunk to a numerical representation capturing the semantics of the chunk, called an ``embedding''.
 	This is performed to allow for downstream semantic comparisons with user queries.
-	\item \textbf{Indexing.} The system stores each chunk and its corresponding embedding in a database optimised for embedding retrieval.
+	\item \textbf{Indexing.} The system stores each chunk and its corresponding embedding in a store optimised for embedding retrieval.
 	This is performed to allow for efficient downstream retrieval of relevant chunks for a user query.
 \end{enumerate}
 
@@ -50,8 +49,25 @@ Given a user query, the system performs the following steps online.
 	\item \textbf{Generation.} The system queries the chat model with the conversation, query, and chunks, and returns the response of the model.
 \end{enumerate}
 
-We had to make several design decisions for our inference provider, embedding model, and chat model.
-From our research, we found three inference provider abstractions: GroqCloud, OpenRouter, and Vertex AI.
+We had to make several design decisions for our vector store, inference provider, embedding model, and chat model.
+
+\begin{table}[H]
+	\centering
+	\begin{tabular}{l@{\qquad}lll}
+		\toprule
+		& \textbf{Chroma} & \textbf{Pinecone} & \textbf{Qdrant} \\
+		\midrule
+		\textbf{License class} & Open & Closed & Open \\
+		\textbf{GitHub stars} & ~25k & ~3k & ~27k \\
+		\bottomrule
+	\end{tabular}
+	\caption{Comparison between Chroma, Pinecone, and Qdrant.}
+\end{table}
+
+\vspacebaselineskip
+
+From our research, we found 3 vector store abstractions: Chroma, Pinecone, and Qdrant.
+We settled on Qdrant as the open license class gives greater developmental control, and the larger community support---as measured by the number of GitHub stars---facilitates debugging.
 
 \begin{table}[H]
 	\centering
@@ -68,9 +84,8 @@ From our research, we found three inference provider abstractions: GroqCloud, Op
 
 \vspacebaselineskip
 
-Ultimately, we settled on OpenRouter as its model support provides the greatest developmental flexibility.
-For our embedding model, we wanted a model with a context size greater than 512 tokens for input flexibility.
-Sorting the models officially supported by OpenRouter with that property by price, the top three models were OpenAI's Text Embedding 3 Small (TE3-Small), BAAI's BGE-M3 (BGE-M3), and Qwen's Qwen3 Embedding 8B (QE-8B).
+From our research, we found three inference provider abstractions: GroqCloud, OpenRouter, and Vertex AI.
+We settled on OpenRouter as its model support provides the greatest developmental flexibility.
 
 \begin{table}[H]
 	\centering
@@ -87,13 +102,9 @@ Sorting the models officially supported by OpenRouter with that property by pric
 
 \vspacebaselineskip
 
-Ultimately, we settled on QE-8B, as the higher context size gives input flexibility and the higher price adds negligible cost.
-For our chat model, we wanted a model with
-an average latency within 1 second and throughput no less than 48 tokens per second for responsiveness,
-a context size no less than 128,000 tokens for in-conversation memory,
-input modalities including text and image for input flexibility, and
-a maximum output size no less than 8,000 tokens for output flexibility.
-Sorting the models officially supported by OpenRouter with those properties by price, the top three models were OpenAI's GPT 5 Chat (gpt-5-chat), Google's Gemini 2.5 Flash (gemini-2.5-flash), and Meta's Llama 4 Maverick (llama-4-maverick).
+For our embedding model, we wanted a model with a context size greater than 512 tokens for input flexibility.
+Sorting the models officially supported by OpenRouter with that property by price, the top three models were OpenAI's Text Embedding 3 Small (TE3-Small), BAAI's BGE-M3 (BGE-M3), and Qwen's Qwen3 Embedding 8B (QE-8B).
+We settled on QE-8B, as the higher context size gives input flexibility.
 
 \begin{table}[H]
 	\centering
@@ -112,7 +123,13 @@ Sorting the models officially supported by OpenRouter with those properties by p
 
 \vspacebaselineskip
 
-Ultimately, we kept these three models as candidates for more rigorous downstream evaluative ablations to decide model deployment, following the industry practice of architecting systems that facilitate model switching \parencite{ng2025}.
+For our chat model, we wanted a model with
+an average latency within 1 second and throughput no less than 48 tokens per second for responsiveness,
+a context size no less than 128,000 tokens for in-conversation memory,
+input modalities including text and image for input flexibility, and
+a maximum output size no less than 8,000 tokens for output flexibility.
+Sorting the models officially supported by OpenRouter with those properties by price, the top three models were OpenAI's GPT 5 Chat (gpt-5-chat), Google's Gemini 2.5 Flash (gemini-2.5-flash), and Meta's Llama 4 Maverick (llama-4-maverick).
+We settled on these three models as candidates for more rigorous downstream evaluative ablations to decide model deployment, following the industry practice of architecting systems that facilitate model switching \parencite{ng2025}.
 
 \section{Frontend}
 
@@ -125,7 +142,7 @@ Authenticated access requires registration and lets accounts retain preferences 
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=0.95\linewidth]{images/frontend-full.png}
-	\caption{Low-fidelity sketches of the frontend UI.}
+	\caption{Sketches of the frontend UI.}
 \end{figure}
 
 \vspacebaselineskip
