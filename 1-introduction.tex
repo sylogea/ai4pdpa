@@ -1,41 +1,63 @@
 \chapter{Introduction}
 
-Rapid digitization has transformed how organizations collect, analyze, and rely on personal data to deliver services, optimize resources, and make critical decisions \parencite{zul2022}.
-In Singapore, this shift is significant due to nationwide efforts to build a Smart nation and accelerate AI adoption across industries \parencite{choudhury2024}.
-As organizations rely heavily on data to drive productivity and innovation, the protection of data has grown into a critical governance concern.
-At the same time, the risk associated with data misuse, unauthorized access, and large-scale breaches have increased.
-High profile incidents in Singapore demonstrate the tangible consequences of poor data governance.
-For example, Marina Bay Sands was fined SGD 315000 by the Personal Data Protection Commission (PDPC) after a data breach exposed the personal information of more than 665000 customers, highlighting the magnitude and impact of failures in data protection practices \parencite{chan2025}.
-Such cases illustrate that even larger organizations with substantial resources can face compliance challenges, while smaller organizations are often less equipped to manage these risks.
-To ensure responsible data practices, Singapore enacted the Personal Data Protection Act 2012 (PDPA).
-It establishes baseline data protection obligations, balancing individual rights with business innovation \parencite{pdpc2023}.
-The PDPC further supports compliance through advisory guidelines and compliance toolkits that are publicly available on its website \parencite{pdpc2022}.
-However, as technology evolves and new regulatory requirements emerge, organizations face ongoing difficulty in interpreting and applying PDPA requirements.
-An example from Singapore illustrates how easily organizations can violate the PDPA during routine operations.
-In the case of Credit Counselling Singapore \parencite{pdpc2017ccs}, an employee sent a follow-up email to 96 clients but mistakenly placed their emails addresses in the ``To'' field instead of using ``Bcc''.
-As a result, 96 email addresses and associated names were visible to all recipients \parencite{pdpc2017ccs}.
-This incident demonstrates that even a simple administrative error can lead to a data breach, regulatory consequences, and the exposure of sensitive personal information.
-It also highlights a broader issue: many organizations, especially smaller ones, lack accessible and practical guide to help them understand and comply with PDPA requirements in everyday situations.
+\section{Motivation}
 
-% problem statement and objectives
-While PDPA information is publicly available, it remains complex and difficult to navigate for non-specialists.
-Existing compliance tools may be costly, generalized, or not tailored to Singapore's regulatory context. SMEs, which often operate without dedicated legal or compliance teams, face difficulty obtaining reliable PDPA guidance that is both comprehensible and operationally relevant.
-This project addresses the problem by developing an AI-driven platform that provides contextualized PDPA information, practical templates, training materials, and insights into organizational compliance concerns.
-The goal is to create a modular, scalable proof-of-concept that meets SME needs while supporting AsiaCloud's longer-term plan to develop a commercial PDPA compliance solution.
-The platform aims to integrate a PDPA chatbot, a document template generator, a training module with automated scoring, and a dashboard offering aggregated analytics, all built on a lightweight, cost-efficient architecture suitable for future expansion.
+Rapid digitalisation has transformed how organisations collect and use personal data to deliver services, optimise operations, and support decision-making \parencite{zul2022}.
+In Singapore, this shift is amplified by national drives toward Smart Nation goals and widespread artificial intelligence (AI) adoption \parencite{choudhury2024}.
+As data use increases, so do risks associated with misuse, unauthorised access, and large-scale breaches.
+Recent cases illustrate these risks.
+For example, Marina Bay Sands was fined SGD\$315,000 after a breach affecting over 665,000 customer records, demonstrating that even mature organisations face difficulties in maintaining strong data protection practices \parencite{chan2025}.
+To safeguard individuals while supporting innovation, the Personal Data Protection Act (PDPA) was introduced to set baseline obligations for all organisations handling personal data \parencite{pdpc2023}.
+However, compliance remains challenging. PDPA guidelines are extensive, spread across multiple documents, and written for readers with legal or technical expertise. As regulations evolve, many organisations---particularly, small and medium enterprises (SMEs)---struggle to interpret requirements correctly.
+This difficulty is evident in common operational errors, such as the Credit Counselling Singapore incident where email addresses were exposed due to incorrect use of the ``To'' field \parencite{pdpc2017ccs}.
+Such examples highlight the need for accessible and scenario-specific compliance guidance.
 
-% scope
+\section{Problem Statement}
+
+Although resources written by the Personal Data Protection Commission (PDPC) resources are publicly available, they are not always accessible to non-specialists.
+Many SMEs lack legal support and rely on ad-hoc interpretations or outdated practices.
+Existing commercial compliance tools are often costly or too complex, while general-purpose AI chatbots may hallucinate, mix regulatory frameworks, or offer unsafe advice.
+This project seeks to address these gaps by developing AI4PDPA, a modular, AI-assisted compliance platform for Singaporean SMEs.
+Its objectives are threefold.
+Firstly, AI4PDPA aims to provide accurate, PDPA-grounded, and scenario-specific guidance through a controlled AI chatbot.
+Secondly, AI4PDPA aims to streamline compliance workflows using structured document templates and PDPA training modules.
+Thirdly, AI4PDPA aims to support AsiaCloud's long-term commercialisation plans with a scalable, cost-efficient architecture and aggregated usage analytics.
+
+\section{Scope}
+
 The project spans two academic terms.
-Term 7 focuses on laying the foundation, which includes defining the system architecture, developing a preliminary chatbot prototype, conducting initial testing, and refining the project requirements based on client feedback.
-This foundational work clarifies key constraints, safety considerations, and the design direction needed to support the full platform.
-Term 8 will focus on implementation.
-The planned work includes completing the chatbot's features---such as safe-answer behaviour and Singapore-specific responses---building a browser-based chat history system, generating PDPA document templates, creating a scoring-enabled training module, and developing a dashboard that presents aggregated usage insights.
-The dashboard will incorporate both a free version and placeholders for future paid-tier features. The architecture will prioritize modularity, cost efficiency, and extensibility to support AsiaCloud's long-term commercial ambitions.
+Term 7 focuses on foundational work, which includes defining the overall system architecture, developing an initial chatbot prototype, conducting preliminary testing, and refining project requirements through iterative feedback sessions with the industry partner.
+This early phase establishes the technical direction, key constraints, and safety considerations necessary to support a scalable PDPA compliance platform.
 
-% stakeholders
-The platform is intended primarily for SMEs operating in Singapore, particularly those without dedicated compliance teams.
-It is designed to support staff who handle personal data in day-to-day operations, new employees undergoing PDPA training, and managers responsible for data protection practices.
-AsiaCloud is also a key stakeholder, as the dashboard's aggregated insights will inform future product development and market positioning.
+Term 8 prioritises full implementation across the platform's core modules.
+Planned work includes completing the chatbot's features---such as safe-answer behaviour, PDPA-specific grounding, and more reliable retrieval---together with developing a server-based chat history system to support analytics and longer-term storage.
+The team will also implement PDPA document template generation, build a training module that allows administrators to upload training content and create quizzes, and develop an administrative analytics dashboard that presents aggregated usage insights for AsiaCloud.
+The system's architecture will emphasise modularity, cost efficiency, and extensibility so that AsiaCloud can build upon this proof-of-concept and scale it into a commercial product after the project concludes.
 
-% success criteria
-The success of the platform will be assessed based on its functional accuracy, relevance, and clarity in delivering PDPA information to users. It should demonstrate safe and responsible behaviour when responding to sensitive or out-of-scope queries, while maintaining an intuitive user experience across the chatbot, templates, dashboard, and training modules. The architecture should remain modular, with components that can be independently enabled to support a free version and future paid-tier enhancements. Cost efficiency is also a key criterion, as the platform must remain accessible and sustainable for SMEs. This working definition will be refined further in consultation with the course instructor.
+\section{Stakeholders}
+
+The platform is designed for users who interact with PDPA obligations in day-to-day SME operations. SMEs form over 99\% of Singapore's enterprises \parencite{lim2025}, and many have limited resources for formal compliance, making accessible PDPA support especially important.
+Operational staff---including administrative, customer service, sales, and human resources personnel---handle personal data frequently but often rely on informal or low-digitisation workflows such as spreadsheets or email \parencite{navarrete2019}.
+These users require quick clarification when performing tasks such as collecting customer details, responding to access requests, or drafting consent notices. The chatbot and document templates are designed to support these immediate operational needs.
+Managers and internal data stewards typically assume PDPA responsibilities in addition to their primary roles. They require clearer guidance for interpreting PDPA obligations, onboarding staff, and ensuring consistent handling of personal data across the organisation. This group benefits from structured training modules and aggregated analytics that highlight recurring compliance gaps.
+SME owners and leadership teams use higher-level insights to evaluate organisational compliance readiness. They rely on the dashboard to understand frequently asked PDPA questions, training participation, and potential areas of risk that require process changes or additional staff support.
+Beyond end-users, AsiaCloud Solutions is a key stakeholder as both industry partner and future maintainer. Their interests include evaluating user behaviours, validating market demand, and identifying features suitable for a commercialised product. The platform's modular architecture and server-based chat logging were designed to support this longer-term vision.
+While not within the immediate scope of the project, the architecture allows for future expansion to industry associations, training providers, and larger organisations that require lightweight PDPA reference tools.
+
+\section{Success Criteria}
+
+The platform's success is evaluated across four dimensions: accuracy, safety, usefulness, and scalability.
+Accuracy refers to providing PDPA-aligned responses grounded in official guidelines and enforcement cases.
+Safety focuses on refusal behaviour for sensitive or out-of-scope queries and on reducing hallucinations through retrieval-based grounding.
+Usefulness concerns the practicality of the chatbot, document templates, training modules, and analytics in supporting common SME compliance tasks.
+Scalability relates to the system's modular, cost-efficient architecture, ensuring suitability for SMEs and future commercial expansion by AsiaCloud.
+These criteria will be assessed through controlled testing, benchmarking, and stakeholder feedback in Term 8.
+
+\section{Constraints}
+
+The project operates under several constraints.
+Regulatory constraints require strict alignment with PDPA and limit guidance to publicly available PDPC materials.
+Data constraints restrict testing to synthetic or anonymised cases, as real organisational data cannot be used.
+Ethical and safety constraints include avoiding hallucinations, avoiding inappropriate advice, and discouraging users from entering sensitive personal data.
+Architectural constraints require a lightweight, cost-efficient, and modular design suitable for SMEs and scalable for AsiaCloud.
+Finally, evaluation constraints limit testing to controlled environments, as large-scale deployment studies fall outside the scope of the project.

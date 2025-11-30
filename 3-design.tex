@@ -1,16 +1,15 @@
 \chapter{System Design}
 
-To support our goal of helping Singaporean SMEs comply with the PDPA, we introduce a novel chatbot system that aims to answer PDPA-related queries in factual and transparent way.
+To support our goal of helping Singaporean SMEs comply with the PDPA, we design a generation pipeline consisting of three steps: moderation, retrieval, and generation.
 
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=0.75\textwidth]{images/pipeline.png}
+	\includegraphics[width=0.5\textwidth]{images/pipeline.png}
 	\caption{Pipeline representation of system.}
 \end{figure}
 
-\vspace{-12pt}
+\vspacebaselineskip
 
-We design a generation pipeline consisting of three steps: moderation, retrieval, and generation.
 Given a user query, the moderation step checks if a query is safe to handle, the retrieval step finds information relevant to the query, and the generation step crafts a response to the query.
 
 On a high level, our system consists of a frontend, backend, and infrastructure.
@@ -20,11 +19,11 @@ The frontend handles the exposed logic, the backend handles the non-exposed logi
 
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=0.8\textwidth]{images/backend-1.png}
+	\includegraphics[width=0.95\textwidth]{images/backend-3.png}
 	\caption{Graphical representation of backend.}
 \end{figure}
 
-\vspace{-12pt}
+\vspacebaselineskip
 
 To ensure factuality, the retrieval step only retrieves information from documents defined as truthful.
 To ensure transparency, the generation step names each source from which information is retrieved.
@@ -48,25 +47,7 @@ Given a user query, the system performs the following steps online.
 	\item \textbf{Generation.} The system queries the chat model with the conversation, query, and chunks, and returns the response of the model.
 \end{enumerate}
 
-We had to make some design decisions for our vector database, inference provider, chunking algorithm, embedding model, vector search algorithm, and chat model.
-
-\begin{table}[H]
-	\centering
-	\begin{tabular}{l@{\qquad}lll}
-		\toprule
-		& \textbf{Chroma} & \textbf{Pinecone} & \textbf{Qdrant} \\
-		\midrule
-		\textbf{License class} & Open & Closed & Open \\
-		\textbf{GitHub stars} & ~25k & ~3k & ~27k \\
-		\bottomrule
-	\end{tabular}
-	\caption{Comparison between Chroma, Pinecone, and Qdrant.}
-\end{table}
-
-\vspace{-12pt}
-
-We found 3 vector database abstractions from our research: Chroma, Pinecone, and Qdrant.
-Ultimately, we settled on Qdrant as the open license class gives greater developmental control, and the larger community support---as measured by the number of GitHub stars---facilitates debugging.
+We had to make some design decisions for our inference provider, embedding model, and chat model. We found 3 inference provider abstractions from our research: GroqCloud, OpenRouter, and Vertex AI.
 
 \begin{table}[H]
 	\centering
@@ -75,23 +56,155 @@ Ultimately, we settled on Qdrant as the open license class gives greater develop
 		& \textbf{GroqCloud} & \textbf{OpenRouter} & \textbf{Vertex AI} \\
 		\midrule
 		\textbf{Relative model count} & Smallest & Largest & In-between \\
-		\textbf{Embedding model support} & Non-existent & Existent & Existent \\
+		\textbf{Embedding model support?} & No & Yes & Yes \\
 		\bottomrule
 	\end{tabular}
 	\caption{Comparison between GroqCloud, OpenRouter, and Vertex AI.}
 \end{table}
 
-\vspace{-12pt}
+\vspacebaselineskip
 
-We found 3 inference provider abstractions: GroqCloud, OpenRouter, and Vertex AI.
-Ultimately, we settled on OpenRouter as its model support provides developmental flexibility.
+Ultimately, we settled on OpenRouter as its model support provides the greatest developmental flexibility.
+For our embedding model, we wanted a model with a context size greater than 512 tokens for input flexibility.
+Sorting the models officially supported by OpenRouter with that property by price, the top 3 models were OpenAI's Text Embedding 3 Small (TE3-Small), BAAI's BGE-M3 (BGE-M3), and Qwen's Qwen3 Embedding 8B (QE-8B).
 
-\lipsum[1-3]
+\begin{table}[H]
+	\centering
+	\begin{tabular}{l@{\qquad}lll}
+		\toprule
+		& \textbf{TE3-Small} & \textbf{BGE-M3} & \textbf{QE-8B} \\
+		\midrule
+		\textbf{Price} & \$0.02/M tokens & \$0.01/M tokens & \$0.01/M tokens \\
+		\textbf{Context size} & 8,192 & 8,192 & 32,000 \\
+		\bottomrule
+	\end{tabular}
+	\caption{Comparison between TE3-Small, BGE-M3, and QE-8B.}
+\end{table}
+
+\vspacebaselineskip
+
+Ultimately, we settled on QE-8B as the higher context size gives input flexibility, and the higher price adds negligible cost.
+For our chat model, we wanted a model with
+an average latency within 1 second and throughput no less than 48 tokens per second for responsiveness,
+a context size no less than 128,000 tokens for in-conversation memory, input modalities including text and image for input flexibility, and a maximum output size no less than 8,000 tokens for output flexibility.
+Sorting the models officially supported by OpenRouter with that property by price, the top 3 models were OpenAI's GPT 5 Chat (gpt-5-chat), Google's Gemini 2.5 Flash (gemini-2.5-flash), and Meta's Llama 4 Maverick (llama-4-maverick).
+
+\begin{table}[H]
+	\centering
+	\begin{tabular}{l@{\qquad}lll}
+		\toprule
+		& \textbf{gpt-5-chat} & \textbf{gemini-2.5-flash} & \textbf{llama-4-maverick} \\
+		\midrule
+		\textbf{Price} & \$11.25/M tokens & \$2.80/M tokens & \$0.75/M tokens \\
+		\textbf{Average latency} & 0.59s & 0.88s & 0.34s \\
+		\textbf{Context size} & 128,000 tokens & 1,024,576 tokens & 1,024,576 tokens \\
+		\textbf{Input modalities} & Text, image, file & Text, image, file, audio, video & Text, image \\
+		\bottomrule
+	\end{tabular}
+	\caption{Comparison between gpt-5-chat, gemini-2.5-flash, and llama-4-maverick.}
+\end{table}
+
+\vspacebaselineskip
+
+Ultimately, we kept these 3 models as candidates for more rigorous downstream evaluative ablations to decide model deployment, following the industry practice of architecting systems that facilitate model switching \parencite{ng2025}.
 
 \section{Frontend Design}
 
-\lipsum[1-3]
+The frontend exposes the PDPA chatbot to SME users through a web interface and aims to minimise interaction friction.
+
+We considered two user interface (UI) interaction modes: anonymous access and authenticated access.
+Anonymous access requires no registration and lets users ask questions immediately.
+Authenticated access requires registration and lets accounts retain preferences and past conversations.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.95\linewidth]{images/frontend-full.png}
+	\caption{Low-fidelity sketches of frontend UI.}
+\end{figure}
+
+\vspacebaselineskip
+
+Given SME needs and the scope of our minimum viable product, we adopt anonymous access to reduce barriers and shorten time-to-value, deferring account-based features to a later phase.
+
+The frontend is implemented with Next.js 15 using a modular component architecture.
+Routing and layout reside in the main application layer, while reusable interface elements are factored into separate components.
+Global state, including conversation history and UI configuration, is maintained in a central store built with Redux Toolkit.
+This separation of concerns improves readability and supports future extensions.
+
+Configuration is driven by environment variables that provide the backend application programming interface (API) base uniform resource locator (URL) and related parameters.
+This allows the same codebase to run in development, staging, and production without code changes.
+To keep latency predictable and token usage bounded, the frontend limits each conversation to a fixed number of recent messages, discarding older turns from the request while retaining them in the on-screen history.
+
+Given a user query, the frontend performs the following steps online.
+
+\begin{enumerate}
+	\item \textbf{Input capture.}
+	The user message is added to the local conversation state and rendered immediately in the chat interface.
+	\item \textbf{Request construction.}
+	The frontend selects the most recent messages, then builds a request containing the conversation history, current query, retrieval settings, and model parameters.
+	\item \textbf{Streaming consumption.}
+	The frontend opens a streaming connection to the backend and incrementally reads server-sent events.
+	Each content fragment is cleaned, converted from Markdown to sanitised Hypertext Markup Language (HTML), and merged into the latest assistant message in the state store.
+	\item \textbf{Interface rendering.}
+	As the state store updates, the interface re-renders the assistant message in real time, giving the impression of word-by-word generation.
+	Conversation state, including errors, is persisted in browser storage, which supports multi-conversation views and future export features.
+	\item \textbf{Error handling.}
+	Network and parsing errors are caught and surfaced as concise messages in the chat, so failures degrade gracefully and remain visible to users and developers.
+\end{enumerate}
 
 \section{Infrastructure Design}
 
-\lipsum[1-3]
+For deployment, the system requires a cloud platform that can host both the frontend and backend as containers, expose them securely to the internet, and scale with changes in user traffic.
+
+We found 3 cloud provider abstractions from our research: Amazon Web Services (AWS), Microsoft Azure (Azure), and Google Cloud Platform (GCP).
+
+\begin{table}[H]
+	\centering
+	\begin{tabular}{l@{\qquad}lll}
+		\toprule
+		& \textbf{AWS} & \textbf{Azure} & \textbf{GCP} \\
+		\midrule
+		\textbf{Market share} & 29\% & 22\% & 12\% \\
+		\textbf{Global region count} & 36 & 60 & 42 \\
+		\textbf{Availability zone count} & 114 & 126 & 127 \\
+		\textbf{Minimum service count} & 200 & 200 & 100 \\
+		\bottomrule
+	\end{tabular}
+	\caption{Comparison between AWS, Azure, and GCP.}
+\end{table}
+
+\vspacebaselineskip
+
+AWS was selected for its large global footprint, mature support for containerised workloads, and close alignment with AsiaCloud's existing infrastructure, making it suitable for rapid prototyping and later production deployment.
+
+Within AWS, we found 6 compute service abstractions from our research: Elastic Compute Cloud (EC2), Lambda, Fargate, App Runner, Lightsail, and Elastic Beanstalk.
+
+\begin{table}[H]
+	\centering
+	\begin{tabular}{l@{\qquad}ll}
+		\toprule
+		& \textbf{Billing metric} & \textbf{Scaling metric} \\
+		\midrule
+		\textbf{EC2} & Instance-hours & Instances \\
+		\textbf{Lambda} & Requests, GB-seconds & Executions \\
+		\textbf{Fargate} & vCPU-hours, GB-hours & Tasks \\
+		\textbf{App Runner} & vCPU-hours, GB-hours, requests & Instances \\
+		\textbf{Lightsail} & Bundled instance-hours & Instances \\
+		\textbf{Elastic Beanstalk} & Instance-hours, LCU-hours, GB-months & EC2 instances \\
+		\bottomrule
+	\end{tabular}
+	\caption{Billing and scaling metrics for AWS services.}
+\end{table}
+
+\vspacebaselineskip
+
+To handle dynamic traffic, integrate with autoscaling, and support future features, Fargate was chosen as the primary compute layer, allowing the number of running tasks to grow or shrink with demand.
+
+To deploy the frontend and backend, the system performs the following steps.
+
+\begin{enumerate}
+	\item \textbf{Application containerisation.} Docker builds separate container images for the frontend and backend, capturing their runtime dependencies.
+	\item \textbf{Image storage.} Amazon Elastic Container Registry (ECR) stores the versioned images for deployment.
+	\item \textbf{Service deployment.} App Runner pulls the images from ECR, provisions compute instances, and exposes the services over a secure protocol.
+	\item \textbf{Operation scaling.} App Runner manages health checks, restarts failed instances, and performs basic autoscaling, which minimises operational overhead and lets us focus on application logic.
+\end{enumerate}

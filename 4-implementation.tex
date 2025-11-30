@@ -2,14 +2,85 @@
 
 \section{Term 7}
 
+Term 7 saw the creation of the first system implementations in two stages: Iteration 1 and Iteration 2.
+Iteration 2 builds upon Iteration 1 incrementally, to ensure a manageable growth of system complexity.
+
 \subsection{Iteration 1}
 
-\lipsum[1-3]
+In Iteration 1, we created our first prototype: Prototype 1.
+
+\begin{figure}[H]
+	\centering
+	\begin{minipage}{0.49\textwidth}
+		\centering
+		\includegraphics[width=\textwidth]{images/prototype-1-1.png}
+	\end{minipage}
+	\begin{minipage}{0.49\textwidth}
+		\centering
+		\includegraphics[width=\textwidth]{images/prototype-1-2.png}
+	\end{minipage}
+	\caption{Preview of Prototype 1.}
+\end{figure}
+
+\vspacebaselineskip
+
+The prototype showed clear strengths.
+It implemented the computational graph correctly on the backend, and rendered the output of the chat model without token artifacts on the frontend.
+However, the prototype also had notable shortcomings.
+It did not maintain memory within conversations, and spent unnecessary compute to rebuild the vector store on each run.
+Overall, Prototype 1 established a functional baseline but required several improvements to support a usable workflow.
 
 \subsection{Iteration 2}
 
-\lipsum[1-3]
+In Iteration 2, we expanded Prototype 1 with a set of core functional upgrades, to create our second prototype: Prototype 2.
+
+\begin{figure}[H]
+	\centering
+	\begin{minipage}{0.49\textwidth}
+		\centering
+		\includegraphics[width=\textwidth]{images/prototype-2-1.png}
+	\end{minipage}
+	\begin{minipage}{0.49\textwidth}
+		\centering
+		\includegraphics[width=\textwidth]{images/prototype-2-2.png}
+	\end{minipage}
+	\caption{Preview of Prototype 2.}
+\end{figure}
+
+\vspacebaselineskip
+
+Prototype 2 introduced several user-facing improvements.
+The chat interface produced progressive, token-by-token responses.
+A consolidated account page enabled management of preferences, account details, and privacy settings.
+The interface was redesigned to be responsive across devices, and a dark–light mode toggle was added.
+Chats could also be exported as PDF files, and past conversations were stored in the browser through LocalStorage.
+Overall, these additions formed a more complete and usable second prototype.
 
 \section{Term 8}
 
-\lipsum[1-3]
+Term 8 will focus on strengthening deployment reliability and expanding the system into a more complete PDPA compliance platform.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.95\textwidth]{images/planned-architecture.png}
+	\caption{Diagram of planned system architecture.}
+\end{figure}
+
+\vspacebaselineskip
+
+A continuous integration and deployment (CI/CD) pipeline will be introduced using GitHub Actions. Each push to the main branch will trigger automated tests, build container images, publish them to the registry, and update the ECS services running on Fargate. This ensures that only validated builds are deployed and reduces manual operational overhead while maintaining consistency between the codebase and the live environment.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.95\textwidth]{images/timeline.png}
+	\caption{Diagram of planned project timeline.}
+\end{figure}
+
+\vspacebaselineskip
+
+In addition to deployment enhancements, Term 8 will extend the functional scope of the system.
+The platform will support persistent server-side chat history, enabling durable and auditable interactions.
+PDPA documents will be generated directly within the chat interface.
+A lightweight training module will allow organisations to upload materials, generate quizzes, and provide feedback to users based on their understanding.
+An analytics dashboard will surface common queries and usage patterns to support organisational insight and operational planning.
+The final phase of Term 8 will focus on performance improvements, PDPA validation, and deployment refinement to produce a stable first version suitable for evaluation by AsiaCloud and SME users.

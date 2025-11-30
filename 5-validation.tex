@@ -2,8 +2,96 @@
 
 \section{System Verification}
 
-\lipsum[1-3]
+To validate system correctness, we conducted unit, integration, and end-to-end tests.
+
+\begin{enumerate}
+	\item \textbf{Unit.} We conducted tests using controlled inputs and expected outputs on individual functions.
+	\item \textbf{Integration.} We conducted tests that exercised the full computational graph.
+	\item \textbf{End-to-end.} We conducted end-to-end simulations of real user interactions through the UI.
+\end{enumerate}
+
+We iteratively improved our system to ensure all tests passed.
 
 \section{System Evaluation}
 
-\lipsum[1-3]
+To identify the most suitable model from our chosen candidate set of chat models, we defined an overall utility measure combining objective and subjective components.
+As a sum of Rational Utility and Subjective Utility, we define Overall Utility by
+\[
+	U_\text{overall} = U_\text{rational} + U_\text{subjective}
+\]
+where the utility of a model can be seen as the degree to which it supports user retention and task success.
+We define Rational Utility by
+\[
+	U_\text{rational}
+	=
+	440A
+	+
+	220\left(
+		\frac{20}{P+7.43}
+	\right)^{0.7}
+	+
+	400M^{0.3}
+	+
+	180\left(
+		\frac{1}{1+T\exp(T-3)}
+	\right)
+\]
+where $A$ represents accuracy,
+$P$ represents price,
+$M$ represents multimodality, and
+$T$ represents latency.
+
+Rational Utility captures objective performance differences.
+It aggregates several measured categories, each weighted by a contribution constant derived from customer-centric factors such as intention, loyalty, and adoption.
+These constants were calculated using beta sensitivities scaled by one thousand.
+
+On the other hand, Subjective Utility captures subjective performance differences.
+Two categories are used, each weighted by a utility constant of five hundred: the first assesses the comprehensibility of responses, while the second assesses their naturalness.
+For each category, the utility contribution is determined by the proportion of responses meeting the desired quality standard.
+
+Term 7 saw the evaluation of the objective component of the benchmark.
+
+First, we crafted two datasets: PDPC22 and APDPC22.
+PDPC22 contains twenty-two question-answer pairs from an educational quiz-like game by PDPC,
+and APDPC22 is an augmented version of PDPC22 which rephrases each question to adopt a more informal tone.
+
+\begin{table}[H]
+	\centering
+	\begin{tabular}{l@{\qquad}ll}
+		\toprule
+		& \textbf{PDPC22} & \textbf{APDPC22} \\
+		\midrule
+		\textbf{True-false question count} & 12 & 12 \\
+		\textbf{Multiple-choice question count} & 10 & 10 \\
+		\textbf{Mean GPT-2 perplexity} & 62.47 & 75.84 \\
+		\textbf{Mean GPT-2 tokens per row} & 48.68 & 50.23 \\
+		\bottomrule
+	\end{tabular}
+	\caption{Properties of PDPC22 and APDPC22.}
+\end{table}
+
+\vspacebaselineskip
+
+Then, we examined the properties of PDPC22 and APDPC22, using GPT-2 as a reference point because it is open-weights and widely used.
+Finally, we evaluated the chat models on PDPC22 and APDPC22, with and without our latest retrieval method.
+
+\begin{figure}[H]
+	\centering
+	\begin{minipage}{0.49\textwidth}
+		\centering
+		\includegraphics[width=\textwidth]{images/pdpc22.png}
+	\end{minipage}
+	\begin{minipage}{0.49\textwidth}
+		\centering
+		\includegraphics[width=\textwidth]{images/apdpc22.png}
+	\end{minipage}
+	\caption{Results for PDPC22 and APDPC22.}
+\end{figure}
+
+\vspacebaselineskip
+
+Across all models, retrieval consistently improved accuracy, though to different degrees.
+This appears to validate our retrieval method as it seems to provide a reliable performance boost across different model capabilities.
+
+From these preliminary results, gemini-2.5-flash appears to be the strongest candidate.
+Term 8 will repeat this experiment with a wider set of forty questions to confirm trends and derive stable accuracy estimates for the Rational Utility calculation, then expand evaluation to subjective metrics through internal testing and, when possible, external trials with SMEs.

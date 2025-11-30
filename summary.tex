@@ -1,3 +1,20 @@
 \chapter*{Executive Summary}
 
-\lipsum[1-1]
+Rapid digitalisation in Singapore has increased the volume of personal data handled by organisations and heightened the risks of misuse, unauthorised access, and data breaches.
+While the Personal Data Protection Act (PDPA) provides the regulatory framework governing responsible data practices, many organisations---especially small and medium enterprises (SMEs)---continue to struggle with interpreting and applying these obligations in day-to-day operations.
+Existing compliance resources are fragmented, technically complex, and often costly, creating a gap for accessible, practical guidance.
+
+To address this challenge, this project collaborates with AsiaCloud to develop AI4PDPA, a modular, AI-driven platform designed to help SMEs understand and apply PDPA requirements more effectively.
+The platform incorporates a PDPA chatbot powered by retrieval-augmented generation (RAG), a document template generator, a PDPA training module with automated scoring, and a dashboard that presents aggregated compliance insights.
+Together, these components aim to provide real-time, contextualised assistance without requiring legal expertise or expensive consultancy services.
+
+In Term 7, the team established the system architecture, conducted literature analysis, identified ethical and PDPA compliance requirements, developed three iterative prototypes of the chatbot.
+Key technical progress included implementing the chunking and storage pipeline, deploying the system on Amazon Web Services (AWS) using containerised services, developing initial front-end interfaces, benchmarking large language models (LLMs) to compare their accuracy and reliability, and integrating early safety and refusal mechanisms aligned with PDPA obligations.
+
+Looking ahead, Term 8 will complete the full platform build.
+Priorities enhancing the chatbot experience, integrating server-based chat history, completing the document-generation and training modules, and building an analytics dashboard that provides value for both SMEs and AsiaCloud.
+To support long-term scalability, the team will transition from a manual deployment process to a GitHub Actions-based Continuous Integration and Continuous Delivery (CI/CD) pipeline.
+The new workflow will automate testing, container builds, and deployment to AWS, reducing operational overhead and ensuring that only validated builds reach production—aligned with modern best practices for development operations (DevOps).
+When fully developed, the platform aims to provide SMEs with a low-barrier, affordable, and practical solution for PDPA compliance, while also giving AsiaCloud a strong foundation for a future commercial offering.
+By combining AI technologies with regulatory grounding and ethical safeguards, the project seeks to enhance organisational readiness, reduce compliance risks, and contribute to Singapore's broader Smart Nation and data protection objectives.
+

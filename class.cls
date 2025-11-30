@@ -9,6 +9,7 @@
 \makeatletter
 \def\thm@space@setup{\thm@preskip=0pt\thm@postskip=0pt}
 \makeatother
+\newcommand{\vspacebaselineskip}{\vspace{-\baselineskip}}
 
 \usepackage{tikz}
 \usetikzlibrary{calc}
@@ -16,26 +17,22 @@
 \usepackage{setspace}
 \linespread{1.15}
 
+\usepackage{enumitem}
+\setlist{nosep}
+
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta}
+
 \renewcommand{\chaptername}{}
 \renewcommand{\thechapter}{\arabic{chapter}}
 
-\makeatletter
-\newcommand\sectionstyleheading[1]{%
-	\@ssect{\z@}%
-		{-3.5ex\@plus -1ex\@minus -.2ex}%
-		{2.3ex\@plus .2ex}%
-		{\normalfont\Large\bfseries\centering}%
-		{#1}%
-}
-\makeatother
-
-\newcommand{\lined}[1]{%
-	\noindent\rule{\linewidth}{1pt}
-
-	{#1}
-
-	\rule{\linewidth}{1pt}
-}
+\usepackage{titlesec}
+\titleformat{\chapter}
+	{\normalfont\huge\bfseries}
+	{\thechapter}
+	{1em}
+	{}
+\titlespacing*{\chapter}{0pt}{0pt}{1em}
 
 \usepackage[backend=biber,style=apa,natbib=true]{biblatex}
 \DeclareLanguageMapping{english}{english-apa}
